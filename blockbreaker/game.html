@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>game 1</title>
+        <style media="screen">
+            canvas {
+                border: 1px black solid;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="id-canvas" width="500" height="300"></canvas>
+        <script>
+            var log = console.log.bind(console)
+
+            var imageFromPath = function(path) {
+                var img = new Image()
+                img.src = path
+                return img
+            }
+
+            var Paddle = function() {
+                var image = imageFromPath('paddle.png')
+                var o = {
+                    image: image,
+                    x: 100,
+                    y: 250,
+                    speed: 5,
+                }
+                o.moveLeft = function() {
+                    o.x -= o.speed
+                }
+                o.moveRight = function() {
+                    o.x += o.speed
+                }
+                return o
+            }
+
+            var Game = function() {
+              // 我们希望某个键位在按下时执行一段代码
+              var g = {
+                actions:{},
+                keydowns: {},
+              }
+              var canvas = document.querySelector('#id-canvas')
+              var context = canvas.getContext('2d')
+              g.canvas = canvas
+              g.context = context
+              // events
+              window.addEventListener('keydown', function(event) {
+                g.keydowns[event.key] = true
+              })
+              window.addEventListener('keyup', function(event) {
+                g.keydowns[event.key] = false
+              })
+
+              g.registerAction = function(key, callback) {
+                g.actions[key] = callback
+              }
+              g.drawImage = function(guaImage) {
+                g.context.drawImage(guaImage.image, guaImage.x, guaImage.y)
+              }
+              setInterval(function() {
+                  // events
+                  var actions = Object.keys(g.actions)
+                  for (var i = 0; i < actions.length; i++) {
+                    var a = actions[i]
+                    if(g.keydowns[a]){
+                      // 如果按键被按下，调用注册的 action
+                      g.actions[a]()
+                    }
+                  }
+                  // update
+                  g.update()
+                  // clear
+                  context.clearRect(0, 0, canvas.width, canvas.height)
+                  //draw
+                  g.draw()
+              }, 1000/30)
+
+              return g
+            }
+
+            var  __main = function() {
+
+                var game = Game()
+
+
+                var leftdown = false
+                var rightdown = false
+
+                var paddle = Paddle()
+
+                game.registerAction('a', function() {
+                  paddle.moveLeft()
+                })
+
+                game.registerAction('d', function() {
+                  paddle.moveRight()
+                })
+                game.update = function() {
+                  if(leftdown) {
+                      paddle.moveLeft()
+                  }else if (rightdown) {
+                      paddle.moveRight()
+                  }
+                }
+
+                game.draw = function() {
+                  game.drawImage(paddle)
+                }
+            }
+            __main()
+
+
+
+
+
+
+
+
+            // var canvas = document.querySelector('#id-canvas')
+            // var context = canvas.getContext('2d')
+            //
+            // var x = 100
+            // var y = 250
+            // var leftdown = false
+            // var rightdown = false
+            // var speed = 5
+            // var img = new Image()
+            // img.src = 'paddle.png'
+            // img.onload = function(){
+            //     context.drawImage(img, x, y)
+            // }
+            // window.addEventListener('keydown', function(e) {
+            //    var k = e.key
+            //    if(k === 'a'){
+            //       leftdown = true
+            //    }else if(k === 'd'){
+            //       rightdown = true
+            //    }
+            // })
+            // window.addEventListener('keyup', function(e) {
+            //    var k = e.key
+            //    if(k === 'a'){
+            //       leftdown = false
+            //    }else if(k === 'd'){
+            //       rightdown = false
+            //    }
+            // })
+            // setInterval(function() {
+            //    // update x and y
+            //    if(leftdown) {
+            //        x -= speed
+            //    }else if (rightdown) {
+            //        x += speed
+            //    }
+            //    // draw
+            //    context.clearRect(0, 0, canvas.width, canvas.height)
+            //    context.drawImage(img, x, y);
+            // }, 1000/60)
+        </script>
+    </body>
+</html>
