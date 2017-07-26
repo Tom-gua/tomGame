@@ -37,7 +37,6 @@
                 o.collide = function(ball) {
                     if (ball.y + ball.image.height > o.y) {
                         if (ball.x > o.x && ball.x < o.x + o.image.width) {
-                            log('相撞')
                             return true
                         }
                     }
@@ -45,6 +44,34 @@
                 }
                 return o
             }
+            var rectIntersects = function(a, b) {
+                var ball = a
+                var o = b
+                if (ball.x > o.x && ball.x < o.x + o.image.width) {
+                    if (ball.y > o.y && ball.y < o.y + o.image.height) {
+                        log('ball和block相撞')
+                        return true
+                    }
+                }
+                return false
+            }
+            var Block = function() {
+                var image = imageFromPath('block.png')
+                var o = {
+                    image: image,
+                    x: 100,
+                    y: 100,
+                    live: true,
+                }
+                o.kill = function() {
+                    o.live = false
+                }
+                o.collide = function(ball) {
+                  return o.live && ( rectIntersects(o, ball) || rectIntersects(ball, o) )
+                }
+                return o
+            }
+
             var Ball = function() {
                 var image = imageFromPath('ball.png')
                 var o = {
@@ -121,7 +148,17 @@
             var  __main = function() {
 
                 var game = Game()
+                // 现在循环加入三个砖块
+                var blocks = []
+                for(var i = 0; i < 3; i++){
+                    var block = Block()
+                    block.x = (i + 1 ) * 100
+                    block.y += 30
+                    log('block',block)
+                    blocks.push(block)
+                }
                 var ball = Ball()
+
                 var paddle = Paddle()
 
                 game.registerAction('a', function() {
@@ -140,11 +177,23 @@
                         // 这里应该调用一个 ball.反弹() 来实现
                         ball.speedY *= -1
                     }
+                    // 这里需要判断 block 和 ball 是否相交
+                    for(var i = 0; i < blocks.length; i++){
+                        var block = blocks[i]
+                        if(block.collide(ball)) {
+                            block.kill()
+                        }
+                    }
                 }
-
                 game.draw = function() {
                   game.drawImage(paddle)
                   game.drawImage(ball)
+                  for(var i = 0; i < blocks.length; i++){
+                      var block = blocks[i]
+                      if(block.live) {
+                          game.drawImage(block)
+                      }
+                  }
                 }
             }
             __main()
@@ -199,3 +248,4 @@
         </script>
     </body>
 </html>
+
