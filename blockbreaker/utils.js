@@ -1,0 +1,21 @@
+
+var e = sel => document.querySelector(sel)
+var log = function(s) { 
+  e('#id-text-log').value += '\n' + s
+}
+
+var imageFromPath = function(path) {
+    var img = new Image()
+    img.src = path
+    return img
+}
+var rectIntersects = function(a, b) {
+    var ball = a
+    var o = b
+    if (ball.x > o.x && ball.x < o.x + o.image.width) {
+        if (ball.y > o.y && ball.y < o.y + o.image.height) {
+            return true
+        }
+    }
+    return false
+}

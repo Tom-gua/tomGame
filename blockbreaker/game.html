@@ -8,201 +8,23 @@
                 border: 1px black solid;
             }
         </style>
+        <script src="utils.js"></script>
+        <script src="guagame.js"></script>
+        <script src="paddle.js"></script>
+        <script src="ball.js"></script>
+        <script src="block.js"></script>
+        <script src="level.js"></script>
+        <script src="main.js"></script>
     </head>
-    <body>
+  <body>
         <canvas id="id-canvas" width="500" height="300"></canvas>
+        <hr>
+        <input id="id-input-speed" type="range" value="1"/>
+        <div class="">
+          <textarea id="id-text-log" rows="20" cols="80"></textarea>
+        </div>
         <script>
-            var log = console.log.bind(console)
-
-            var imageFromPath = function(path) {
-                var img = new Image()
-                img.src = path
-                return img
-            }
-
-            var Paddle = function() {
-                var image = imageFromPath('paddle.png')
-                var o = {
-                    image: image,
-                    x: 100,
-                    y: 250,
-                    speed: 5,
-                }
-                o.moveLeft = function() {
-                    o.x -= o.speed
-                }
-                o.moveRight = function() {
-                    o.x += o.speed
-                }
-                o.collide = function(ball) {
-                    if (ball.y + ball.image.height > o.y) {
-                        if (ball.x > o.x && ball.x < o.x + o.image.width) {
-                            return true
-                        }
-                    }
-                    return false
-                }
-                return o
-            }
-            var rectIntersects = function(a, b) {
-                var ball = a
-                var o = b
-                if (ball.x > o.x && ball.x < o.x + o.image.width) {
-                    if (ball.y > o.y && ball.y < o.y + o.image.height) {
-                        log('ball和block相撞')
-                        return true
-                    }
-                }
-                return false
-            }
-            var Block = function() {
-                var image = imageFromPath('block.png')
-                var o = {
-                    image: image,
-                    x: 100,
-                    y: 100,
-                    live: true,
-                }
-                o.kill = function() {
-                    o.live = false
-                }
-                o.collide = function(ball) {
-                  return o.live && ( rectIntersects(o, ball) || rectIntersects(ball, o) )
-                }
-                return o
-            }
-
-            var Ball = function() {
-                var image = imageFromPath('ball.png')
-                var o = {
-                    image: image,
-                    x: 100,
-                    y: 200,
-                    speedX: 10,
-                    speedY: 10,
-                    fired: false,
-                }
-                o.fire = function() {
-                    o.fired = true
-                }
-                o.move = function() {
-                    if(o.fired) {
-                        if (o.x < 0 || o.x > 500) {
-                            o.speedX = -o.speedX
-                        }
-                        if (o.y < 0 || o.y > 300) {
-                            o.speedY = -o.speedY
-                        }
-                        // move
-                        o.x += o.speedX
-                        o.y += o.speedY
-                    }
-                }
-                return o
-            }
-            var Game = function() {
-              // 我们希望某个键位在按下时执行一段代码
-              var g = {
-                actions:{},
-                keydowns: {},
-              }
-              var canvas = document.querySelector('#id-canvas')
-              var context = canvas.getContext('2d')
-              g.canvas = canvas
-              g.context = context
-              // events
-              window.addEventListener('keydown', function(event) {
-                g.keydowns[event.key] = true
-              })
-              window.addEventListener('keyup', function(event) {
-                g.keydowns[event.key] = false
-              })
-
-              g.registerAction = function(key, callback) {
-                g.actions[key] = callback
-              }
-              g.drawImage = function(guaImage) {
-                g.context.drawImage(guaImage.image, guaImage.x, guaImage.y)
-              }
-              setInterval(function() {
-                  // events
-                  var actions = Object.keys(g.actions)
-                  for (var i = 0; i < actions.length; i++) {
-                    var key = actions[i]
-                    if(g.keydowns[key]){
-                      // 如果按键被按下，调用注册的 action
-                      g.actions[key]()
-                    }
-                  }
-                  // update
-                  g.update()
-                  // clear
-                  context.clearRect(0, 0, canvas.width, canvas.height)
-                  //draw
-                  g.draw()
-              }, 1000/30)
-
-              return g
-            }
-
-            var  __main = function() {
-
-                var game = Game()
-                // 现在循环加入三个砖块
-                var blocks = []
-                for(var i = 0; i < 3; i++){
-                    var block = Block()
-                    block.x = (i + 1 ) * 100
-                    block.y += 30
-                    log('block',block)
-                    blocks.push(block)
-                }
-                var ball = Ball()
-
-                var paddle = Paddle()
-
-                game.registerAction('a', function() {
-                  paddle.moveLeft()
-                })
-
-                game.registerAction('d', function() {
-                  paddle.moveRight()
-                })
-                game.registerAction('f', function() {
-                    ball.fire()
-                })
-                game.update = function() {
-                    ball.move()
-                    if (paddle.collide(ball)) {
-                        // 这里应该调用一个 ball.反弹() 来实现
-                        ball.speedY *= -1
-                    }
-                    // 这里需要判断 block 和 ball 是否相交
-                    for(var i = 0; i < blocks.length; i++){
-                        var block = blocks[i]
-                        if(block.collide(ball)) {
-                            block.kill()
-                        }
-                    }
-                }
-                game.draw = function() {
-                  game.drawImage(paddle)
-                  game.drawImage(ball)
-                  for(var i = 0; i < blocks.length; i++){
-                      var block = blocks[i]
-                      if(block.live) {
-                          game.drawImage(block)
-                      }
-                  }
-                }
-            }
             __main()
-
-
-
-
-
-
 
 
             // var canvas = document.querySelector('#id-canvas')
@@ -248,4 +70,3 @@
         </script>
     </body>
 </html>
-
