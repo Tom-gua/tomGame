@@ -1,8 +1,9 @@
-var Game = function(ftps) {
+var Game = function(fps, images, runCallback) {
   // 我们希望某个键位在按下时执行一段代码
   var g = {
     actions:{},
     keydowns: {},
+    images: {},
   }
   var canvas = document.querySelector('#id-canvas')
   var context = canvas.getContext('2d')
@@ -22,6 +23,37 @@ var Game = function(ftps) {
   g.drawImage = function(guaImage) {
     g.context.drawImage(guaImage.image, guaImage.x, guaImage.y)
   }
+
+    var loads = []
+    // 加载图片资源，加载了之后，才能运行run
+    var names = Object.keys(images)
+    for(var i = 0; i < names.length; i++){
+        let name = names[i]
+        var path = images[name]
+        let img = new Image()
+        img.src = path
+        img.onload = function() {
+            // 存入 g.images 中
+            g.images[name] = img
+            // 所有图片都成功载入之后, 调用 run
+            loads.push(1)
+            log('load images', loads.length, names.length)
+            if (loads.length == names.length) {
+                log('load images', g.images)
+                g.run()
+            }
+        }
+    }
+  g.imageByName = function(name) {
+      var img = g.images[name]
+      var image = {
+        w: img.width,
+        h: img.height,
+        image: img,
+      }
+      return image
+  }
+
   window.fps = 30
   var runloop = function() {
     // events
@@ -45,9 +77,15 @@ var Game = function(ftps) {
       runloop()
     }, 1000/window.fps)
   }
-  setTimeout(function() {
-    runloop()
-  }, 1000/fps)
+  g.run = function() {
+      // log('开始运行程序')
+      runCallback()
+      // 开始运行程序
+      setTimeout(function() {
+          runloop()
+      }, 1000/fps)
+  }
+
 
   return g
 }
