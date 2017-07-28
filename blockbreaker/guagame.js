@@ -21,6 +21,7 @@ var Game = function(fps, images, runCallback) {
     g.actions[key] = callback
   }
   g.drawImage = function(guaImage) {
+
     g.context.drawImage(guaImage.image, guaImage.x, guaImage.y)
   }
 

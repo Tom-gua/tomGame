@@ -75,6 +75,10 @@ var  __main = function() {
             }
         }
         game.draw = function() {
+            // draw 背景
+            game.context.fillStyle = "#554"
+            game.context.fillRect(0, 0, 500, 300)
+
             game.drawImage(paddle)
             game.drawImage(ball)
             for(var i = 0; i < blocks.length; i++){
