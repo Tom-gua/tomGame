@@ -1,6 +1,7 @@
 var Game = function(fps, images, runCallback) {
   // 我们希望某个键位在按下时执行一段代码
   var g = {
+    scene: null,
     actions:{},
     keydowns: {},
     images: {},
@@ -21,10 +22,14 @@ var Game = function(fps, images, runCallback) {
     g.actions[key] = callback
   }
   g.drawImage = function(guaImage) {
-
     g.context.drawImage(guaImage.image, guaImage.x, guaImage.y)
   }
-
+  g.update = function() {
+      g.scene.update()
+  }
+  g.draw = function() {
+      g.scene.draw()
+  }
     var loads = []
     // 加载图片资源，加载了之后，才能运行run
     var names = Object.keys(images)
@@ -38,7 +43,7 @@ var Game = function(fps, images, runCallback) {
             g.images[name] = img
             // 所有图片都成功载入之后, 调用 run
             loads.push(1)
-            log('load images', loads.length, names.length)
+            // log('load images', loads.length, names.length)
             if (loads.length == names.length) {
                 log('load images', g.images)
                 g.run()
@@ -54,7 +59,14 @@ var Game = function(fps, images, runCallback) {
       }
       return image
   }
-
+    g.runWithScene = function(scene) {
+        // 切换场景
+        g.scene = scene
+        // 开始运行程序
+        setTimeout(function() {
+            runloop()
+        }, 1000/fps)
+    }
   window.fps = 30
   var runloop = function() {
     // events
@@ -64,7 +76,7 @@ var Game = function(fps, images, runCallback) {
       if(g.keydowns[key]){
         // 如果按键被按下，调用注册的 action
         g.actions[key]()
-        log('触发')
+        // log('触发')
       }
     }
     // update
@@ -80,13 +92,7 @@ var Game = function(fps, images, runCallback) {
   }
   g.run = function() {
       // log('开始运行程序')
-      runCallback()
-      // 开始运行程序
-      setTimeout(function() {
-          runloop()
-      }, 1000/fps)
+      runCallback(g)
   }
-
-
   return g
 }
