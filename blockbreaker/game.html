@@ -8,13 +8,20 @@
                 border: 1px black solid;
             }
         </style>
-        <script src="utils.js"></script>
-        <script src="guagame.js"></script>
-        <script src="paddle.js"></script>
-        <script src="ball.js"></script>
-        <script src="block.js"></script>
+        <!-- gua game 相关文件 -->
+        <script src="tomgame/utils.js"></script>
+        <script src="tomgame/gua_game.js"></script>
+        <script src="tomgame/gua_scene.js"></script>
+        <!-- 场景文件 -->
+        <script src="scene/main/paddle.js"></script>
+        <script src="scene/main/ball.js"></script>
+        <script src="scene/main/block.js"></script>
+        <script src="scene/main/scene.js"></script>
+        <!-- 结束和标题场景 -->
+        <script src="scene/end/scene_end.js"></script>
+        <script src='scene/title/scene_title.js'></script>
+        <!-- 关卡数据 -->
         <script src="level.js"></script>
-        <script src="scene.js"></script>
     </head>
   <body>
         <canvas id="id-canvas" width="500" height="300"></canvas>
@@ -29,6 +36,10 @@
             // 2. 修改碰撞函数
             // 3. 改变画布的颜色
             // 4. 实现小球拖动
+
+            // 1.整理文件分类
+            // 2.面向对象重构
+
             // var canvas = document.querySelector('#id-canvas')
             // var context = canvas.getContext('2d')
             //

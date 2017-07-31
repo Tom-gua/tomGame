@@ -35,12 +35,12 @@ var enableDebugMode = function(game, enable) {
 }
 var  __main = function() {
     var images = {
-        block: 'block.png',
-        ball: 'ball.png',
-        paddle: 'paddle.png',
+        block: 'img/block.png',
+        ball: 'img/ball.png',
+        paddle: 'img/paddle.png',
     }
     var game = Game(30, images, function(g) {
-        var s = Scene(g)
+        var s = SceneTitle.new(g)
         g.runWithScene(s)
         // var ball = Ball(game)
         // var paddle = Paddle(game)

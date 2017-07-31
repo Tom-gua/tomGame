@@ -43,6 +43,10 @@ var Scene = function(game) {
             // 这里应该调用一个 ball.反弹() 来实现
             ball.rebound()
         }
+        if(ball.y > paddle.y){
+            var s = SceneEnd.new(game)
+            game.runWithScene(s)
+        }
 
         // 这里需要判断 block 和 ball 是否相交
         for(var i = 0; i < blocks.length; i++){

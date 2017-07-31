@@ -30,6 +30,9 @@ var Game = function(fps, images, runCallback) {
   g.draw = function() {
       g.scene.draw()
   }
+  g.replaceScene = function(scene) {
+      this.scene = scene
+  }
     var loads = []
     // 加载图片资源，加载了之后，才能运行run
     var names = Object.keys(images)
