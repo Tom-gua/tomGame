@@ -24,7 +24,7 @@ var enableDebugMode = function(game, enable) {
     }else if ('123456789'.includes(k)) {
       // 暂时为了 debug 临时加入关卡功能
         log('k',k)
-      blocks = loadLevel(game, Number(k))
+      // blocks = loadLevel(game, Number(k))
     }
   })
   // 控制速度
@@ -35,12 +35,13 @@ var enableDebugMode = function(game, enable) {
 }
 var  __main = function() {
     var images = {
-        block: 'img/block.png',
+        bullet: 'img/block.png',
         ball: 'img/ball.png',
-        paddle: 'img/paddle.png',
+        sky: 'img/sky.png',
+        player: 'img/player.png',
     }
-    var game = Game.instance(30, images, function(g) {
-        var s = SceneTitle.new(g)
+    var game = Game.instance(60, images, function(g) {
+        var s = Scene.new(g)
         g.runWithScene(s)
         // var ball = Ball(game)
         // var paddle = Paddle(game)
