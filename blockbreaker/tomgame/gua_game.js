@@ -26,7 +26,11 @@ class Game {
         return this.i
     }
     drawImage(img) {
-        this.context.drawImage(img.image, img.x, img.y)
+        if(img.w){
+            this.context.drawImage(img.image, img.x, img.y, img.w, img.h)
+        }else {
+            this.context.drawImage(img.image, img.x, img.y)
+        }
     }
     // update
     update() {

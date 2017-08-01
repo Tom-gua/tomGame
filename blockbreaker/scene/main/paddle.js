@@ -2,6 +2,8 @@ var Paddle = function(game) {
     var o = game.imageByName('paddle')
         o.x = 100
         o.y = 250
+        o.w = 120
+        o.h= 20
         o.speed = 10
     o.moveLeft = function() {
         if(o.x < 0){
@@ -17,6 +19,11 @@ var Paddle = function(game) {
     }
     var aInb = function(x, x1, x2) {
         return x >= x1 && x <= x2
+    }
+    o.hasPoint = function(x, y) {
+        var xIn = x > o.x && x < o.x + o.w
+        var yIn = y > o.y && y < o.y + o.h
+        return xIn && yIn
     }
     o.collide = function(ball) {
         // log('ball',ball)

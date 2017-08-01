@@ -7,6 +7,7 @@ var Scene = function(game) {
     }
     var ball = Ball(game)
     var paddle = Paddle(game)
+    var bg = Bg(game)
     // var paused = false
     var score = 0
     game.registerAction('a', function() {
@@ -21,8 +22,8 @@ var Scene = function(game) {
     })
     s.draw = function() {
         // draw 背景
-        game.context.fillStyle = "#554"
-        game.context.fillRect(0, 0, 500, 300)
+
+        game.drawImage(bg)
 
         game.drawImage(paddle)
         game.drawImage(ball)
