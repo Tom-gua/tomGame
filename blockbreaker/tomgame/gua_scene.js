@@ -5,6 +5,7 @@ class GuaScene {
     constructor(game) {
        this.game = game
        this.elements = []
+       this.enableDebugMode = true
     }
     static new(game) {
         var i = new this(game)
@@ -21,6 +22,10 @@ class GuaScene {
       this.elements.push(guaImage)
     }
     update(){
+      for (var i = 0; i < this.elements.length; i++) {
+        var e = this.elements[i]
+        e.debuger && this.enableDebugMode && e.debuger()
+      }
       for (var i = 0; i < this.elements.length; i++) {
         var e = this.elements[i]
         e.update()

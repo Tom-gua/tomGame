@@ -1,6 +1,12 @@
 /**
  * Created by liteng on 2017/7/29.
  */
+ const config = {
+   player_speed : 10,
+   bullet_speed: 3,
+   enemy_speed: 2,
+ }
+
 class Bullet extends GuaImage {
      constructor(game) {
          super(game, 'bullet')
@@ -11,6 +17,9 @@ class Bullet extends GuaImage {
      }
      update() {
        this.y -= this.speed
+     }
+     debuger() {
+       this.speed = config.bullet_speed
      }
  }
 class Player extends GuaImage {
@@ -26,6 +35,9 @@ class Player extends GuaImage {
         if(this.cooldown > 0) {
             this.cooldown--
         }
+    }
+    debuger() {
+      this.speed = config.player_speed
     }
     moveLeft() {
         this.x -= this.speed
@@ -63,7 +75,6 @@ class Enemy extends GuaImage {
         super(game, 'enemy')
         // var type = randomBetween(0, 4)
         this.setup()
-
     }
     setup() {
         this.speed = randomBetween(2, 5)
@@ -75,6 +86,9 @@ class Enemy extends GuaImage {
         if(this.y > 600) {
             this.setup()
         }
+    }
+    debuger(){
+      this.speed = config.enemy_speed
     }
     // moveDown() {
     //     this.y += this.speed
