@@ -40,9 +40,11 @@ var  __main = function() {
         sky: 'img/sky.png',
         player: 'img/player.png',
         enemy: 'img/boss.png',
+        fire: 'img/fire.png',
     }
     var game = Game.instance(60, images, function(g) {
-        var s = Scene.new(g)
+        var s = SceneTitle.new(g)
+        // var s = Scene.new(g)
         g.runWithScene(s)
         // var ball = Ball(game)
         // var paddle = Paddle(game)

@@ -12,9 +12,10 @@ class GuaScene {
         return i
     }
     draw(){
-      for (var i = 0; i < this.elements.length; i++) {
-        var e = this.elements[i]
-        this.game.drawImage(e)
+      for (var e of this.elements) {
+        // var e = this.elements[i]
+        e.draw()
+        // this.game.drawImage(e)
       }
     }
     addElement(guaImage) {

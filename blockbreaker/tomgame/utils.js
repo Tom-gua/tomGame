@@ -8,6 +8,10 @@ var textureByName = function(path) {
     img.src = path
     return img
 }
+const randomBetween = function(start, end) {
+    var n = Math.random(start, end) * (end - start + 1)
+    return Math.floor(n)
+}
 var rectIntersects = function(a, b) {
     var ball = a
     var o = b

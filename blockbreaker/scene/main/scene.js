@@ -61,14 +61,10 @@ class Player extends GuaImage {
             b.y = y - 5
             this.scene.addElement(b)
         }
-
     }
 }
 
-const randomBetween = function(start, end) {
-    var n = Math.random() * (end - start + 1)
-    return Math.floor(n)
-}
+
 
 class Enemy extends GuaImage {
     constructor(game) {
