@@ -54,17 +54,18 @@ class Bullet extends GuaImage {
 
     blast() {
         var game = this.game
+        var die = []
         this.scene.enemies.forEach((item, index) => {
             if(this.collide(item, this)) {
                 // 需要在碰撞处加载粒子效果
                 this.scene.particleSystems = GuaParticleSystems.new(game, this.x, this.y)
-                this.scene.particleSystems.life = 0
                 this.scene.addElement(this.scene.particleSystems)
+
                 // 子弹和飞机消失
                 item.life = 0
                 this.life = 0
                 // 粒子效果持续几秒后消失
-                this.scene.enemies.splice(index, 0)
+               die.push(index)
             }
         })
     }
@@ -154,6 +155,7 @@ class Enemy extends GuaImage {
         this.y += this.speed
         if(this.y > 600) {
             this.setup()
+            this.scene.enemies.push(this)
         }
     }
 
@@ -222,9 +224,12 @@ class Scene extends GuaScene {
             this.player.fire()
         })
     }
-
+    removeEnemies() {
+        // 从数组中删除已经爆炸的敌机
+        this.enemies = this.enemies.filter(item => item.life == 100)
+    }
     update() {
-        //
+        this.removeEnemies()
         super.update()
     }
 }
