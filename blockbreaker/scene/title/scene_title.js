@@ -1,19 +1,19 @@
-class GuaLabel {
-  constructor(game, text) {
-    this.game = game
-    this.text = text
-  }
-  static new(game, text) {
-    log(name, text)
-    return new this(game, text)
-  }
-  draw() {
-    this.game.context.fillText(this.text, 100, 190)
-  }
-  update() {
-
-  }
-}
+// class GuaLabel {
+//   constructor(game, text) {
+//     this.game = game
+//     this.text = text
+//   }
+//   static new(game, text) {
+//     log(name, text)
+//     return new this(game, text)
+//   }
+//   draw() {
+//     this.game.context.fillText(this.text, 100, 190)
+//   }
+//   update() {
+//
+//   }
+// }
 
 
 class GuaParticle extends GuaImage{
@@ -35,29 +35,29 @@ class GuaParticle extends GuaImage{
     this.life--
     this.x += this.vx
     this.y += this.vy
-    var s = 0.5
+    var s = 0.001
     this.vx += s * this.vx
     this.vy += s * this.vy
   }
 }
 
 class GuaParticleSystems {
-  constructor(game) {
+  constructor(game, x, y) {
     this.game = game
+      this.x = x
+      this.y = y
     this.setup()
   }
   setup() {
-    this.duration = 60
-    this.x = 150
-    this.y = 200
+    this.duration = 20
     this.numberOfParticles = 20
     this.particles = []
   }
-  static new(game) {
-    return new this(game)
+  static new(game, x, y) {
+    return new this(game, x, y)
   }
   draw() {
-    if(this.duration < 0){
+      if(this.duration < 0){
       //TODO, 这是一个临时的方案，应该从 scene 中删除自己才对
       return
     }
@@ -67,7 +67,6 @@ class GuaParticleSystems {
   }
   update() {
     this.duration--
-
     // 添加小火花
     if(this.particles.length < this.numberOfParticles) {
       var p = GuaParticle.new(this.game)

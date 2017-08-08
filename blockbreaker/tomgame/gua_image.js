@@ -15,6 +15,9 @@ class GuaImage {
         return i
     }
     draw(){
+        if(this.life === 0) {
+            return
+        }
         this.game.drawImage(this)
     }
     update(){

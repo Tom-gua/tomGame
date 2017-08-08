@@ -10,7 +10,7 @@ var textureByName = function(path) {
 }
 const randomBetween = function(start, end) {
     var n = Math.random(start, end) * (end - start + 1)
-    return Math.floor(n)
+    return Math.floor(n + start)
 }
 var rectIntersects = function(a, b) {
     var ball = a
