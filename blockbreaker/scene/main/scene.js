@@ -34,13 +34,6 @@ class Bullet extends GuaImage {
     }
 
     collide(o, ball) {
-        // log('ball',ball)
-        // if (ball.y + ball.image.height > o.y) {
-        //     if (ball.x > o.x && ball.x < o.x + o.image.width) {
-        //         return true
-        //     }
-        // }
-        // return false
         var a = o
         var b = ball
         var aInb = this.aInb
@@ -54,7 +47,6 @@ class Bullet extends GuaImage {
 
     blast() {
         var game = this.game
-        var die = []
         this.scene.enemies.forEach((item, index) => {
             if(this.collide(item, this)) {
                 // 需要在碰撞处加载粒子效果
@@ -64,26 +56,10 @@ class Bullet extends GuaImage {
                 // 子弹和飞机消失
                 item.life = 0
                 this.life = 0
-                // 粒子效果持续几秒后消失
-               die.push(index)
             }
         })
     }
 
-    // blast() {
-    //     var game = this.game
-    //     this.scene.enemies.forEach((item, index) => {
-    //         if(item.y + item.h - this.y === 0) {
-    //             // 需要在碰撞处加载粒子效果
-    //             this.scene.particleSystems = GuaParticleSystems.new(game, this.x, this.y)
-    //             this.scene.addElement(this.scene.particleSystems)
-    //             // 子弹和飞机消失
-    //             item.life = 0
-    //             this.life = 0
-    //             this.scene.enemies.splice(index, 0)
-    //         }
-    //     })
-    // }
 }
 class Player extends GuaImage {
     constructor(game) {
@@ -124,7 +100,7 @@ class Player extends GuaImage {
     }
 
     fire() {
-        if(this.cooldown === 0) {
+        if(this.life > 0 && this.cooldown === 0) {
             this.cooldown = 10
             var x = this.x + this.w / 2.8
             var y = this.y
@@ -136,22 +112,79 @@ class Player extends GuaImage {
     }
 }
 
-
-class Enemy extends GuaImage {
+class EnemyBullet extends GuaImage {
     constructor(game) {
+        super(game, 'bullet')
+        this.setup()
+    }
+
+    setup() {
+        this.speed = 3
+        this.life = 100
+    }
+
+    update() {
+        this.blast()
+        this.y += this.speed
+    }
+
+    debuger() {
+        this.speed = config.bullet_speed
+    }
+
+    aInb(x, x1, x2) {
+        return x >= x1 && x <= x2
+    }
+
+    collide(o, ball) {
+        var a = o
+        var b = ball
+        var aInb = this.aInb
+        if(aInb(a.x, b.x, b.x + b.w,) || aInb(b.x, a.x, a.x + a.w) ) {
+            if(aInb(a.y, b.y, b.y + b.h) || aInb(b.y, a.y, a.y + a.h) && a.y === b.y + b.h) {
+                return true
+            }
+        }
+        return false
+    }
+
+    blast() {
+        var p = this.scene.player
+        if(this.life > 0 & this.collide(p, this)) {
+            // 子弹消失
+            this.life = 0
+            p.life--
+            this.scene.particleSystems = GuaParticleSystems.new(this.game, this.x, this.y)
+            this.scene.addElement(this.scene.particleSystems)
+        }
+    }
+}
+class Enemy extends GuaImage {
+    constructor(game, scene) {
         super(game, 'enemy')
+        this.scene = scene
         // var type = randomBetween(0, 4)
         this.setup()
     }
 
     setup() {
         this.life = 100
+        this.cooldown = 0
         this.speed = randomBetween(2, 5)
         this.x = randomBetween(0, 350)
         this.y = -randomBetween(0, 200)
+        this.onFire()
     }
-
+    onFire() {
+            if(this.life > 0) {
+                this.fire()
+            }
+    }
     update() {
+        if(this.cooldown > 0) {
+            this.cooldown--
+        }
+        this.fire()
         this.y += this.speed
         if(this.y > 600) {
             this.setup()
@@ -161,6 +194,18 @@ class Enemy extends GuaImage {
 
     debuger() {
         this.speed = config.enemy_speed
+    }
+
+    fire() {
+        if(this.life > 0 && this.cooldown === 0) {
+            this.cooldown = 100
+            var x = this.x + this.w / 2.8
+            var y = this.y
+            var b = EnemyBullet.new(this.game)
+            b.x = x - 5
+            b.y = y + 30
+            this.scene.addElement(b)
+        }
     }
 
     // moveDown() {
@@ -177,7 +222,7 @@ class Scene extends GuaScene {
 
     setup() {
         var game = this.game
-        this.numberOfEnemies = 10
+        this.numberOfEnemies = 5
         this.bg = GuaImage.new(game, 'sky')
         this.player = Player.new(game)
         this.player.x = 100
@@ -197,7 +242,7 @@ class Scene extends GuaScene {
     addEnemies() {
         var es = []
         for(var i = 0; i < this.numberOfEnemies; i++) {
-            var e = Enemy.new(this.game)
+            var e = Enemy.new(this.game, this)
             e.w = 60
             e.h = 60
             es.push(e)
@@ -224,10 +269,12 @@ class Scene extends GuaScene {
             this.player.fire()
         })
     }
+
     removeEnemies() {
         // 从数组中删除已经爆炸的敌机
         this.enemies = this.enemies.filter(item => item.life == 100)
     }
+
     update() {
         this.removeEnemies()
         super.update()

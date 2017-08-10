@@ -14,9 +14,14 @@ class GuaScene {
     draw(){
       for (var e of this.elements) {
         // var e = this.elements[i]
-        e.draw()
-        // this.game.drawImage(e)
+          e.draw()
+          // this.game.drawImage(e)
       }
+    }
+    removeElement(guaImage) {
+        guaImage.scene = this
+        var index = this.elements.findIndex(guaImage)
+        this.elements.splice(index, 1)
     }
     addElement(guaImage) {
       guaImage.scene = this
