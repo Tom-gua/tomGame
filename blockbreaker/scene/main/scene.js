@@ -48,7 +48,7 @@ class Bullet extends GuaImage {
     blast() {
         var game = this.game
         this.scene.enemies.forEach((item, index) => {
-            if(this.collide(item, this)) {
+            if(this.life > 0 && this.collide(item, this)) {
                 // 需要在碰撞处加载粒子效果
                 this.scene.particleSystems = GuaParticleSystems.new(game, this.x, this.y)
                 this.scene.addElement(this.scene.particleSystems)
