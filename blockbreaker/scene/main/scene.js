@@ -31,7 +31,7 @@ class Love extends GuaImage {
           this.blast()
           this.fire()
           this.y += this.speed
-        if(this.y > 600) {
+        if(this.y > 600 || this.cooldown == 0) {
             this.setup()
             this.scene.enemies.push(this)
         }
