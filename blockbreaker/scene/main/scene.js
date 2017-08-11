@@ -33,7 +33,6 @@ class Love extends GuaImage {
           this.y += this.speed
         if(this.y > 600 || this.cooldown == 0) {
             this.setup()
-            this.scene.enemies.push(this)
         }
     }
 
@@ -54,7 +53,6 @@ class Love extends GuaImage {
             // 子弹消失
             this.life = 0
             p.life += 30
-            log('p.life', p.life)
         }
     }
 
