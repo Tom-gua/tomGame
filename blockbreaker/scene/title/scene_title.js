@@ -1,19 +1,24 @@
-// class GuaLabel {
-//   constructor(game, text) {
-//     this.game = game
-//     this.text = text
-//   }
-//   static new(game, text) {
-//     log(name, text)
-//     return new this(game, text)
-//   }
-//   draw() {
-//     this.game.context.fillText(this.text, 100, 190)
-//   }
-//   update() {
-//
-//   }
-// }
+class GuaLabel {
+  constructor(game, text) {
+    this.game = game
+    this.text = text
+  }
+  static new(game, text) {
+    return new this(game, text)
+  }
+  draw() {
+    var g = this.game.context
+    g.fillStyle = "lightgreen"
+    g.font = "30px Arial"
+    if(this.scene.player.life <  20) {
+      g.fillStyle = "tomato"
+    }
+    g.fillText(this.text, 120, 570)
+  }
+  update() {
+    this.text = `生命值: ${this.scene.player.life}`
+  }
+}
 
 
 class GuaParticle extends GuaImage{

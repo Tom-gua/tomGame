@@ -42,6 +42,7 @@ var  __main = function() {
         player: 'img/player.png',
         enemy: 'img/boss.png',
         fire: 'img/ball.png',
+        love:'img/block.png',
     }
     var game = Game.instance(60, images, function(g) {
         // var s = SceneTitle.new(g)

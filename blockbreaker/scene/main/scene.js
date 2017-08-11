@@ -7,6 +7,62 @@ const config = {
     enemy_speed: 2,
 }
 
+
+// 加血
+class Love extends GuaImage {
+    constructor(game, scene) {
+        super(game, 'love')
+        this.scene = scene
+        // var type = randomBetween(0, 4)
+        this.setup()
+    }
+
+    setup() {
+        this.life = 100
+        this.cooldown = 0
+        this.speed = randomBetween(2, 5)
+        this.x = randomBetween(0, 350)
+        this.y = -randomBetween(0, 200)
+    }
+    update() {
+          if(this.cooldown > 0) {
+              this.cooldown--
+          }
+          this.blast()
+          this.fire()
+          this.y += this.speed
+        if(this.y > 600) {
+            this.setup()
+            this.scene.enemies.push(this)
+        }
+    }
+
+    debuger() {
+        this.speed = config.enemy_speed
+    }
+
+    fire() {
+        if(this.life > 0 && this.cooldown === 0) {
+            this.cooldown = 100
+        }
+    }
+
+    blast() {
+        var s = this.scene
+        var p = this.scene.player
+        if(this.life > 0 && p.life > 0 &&  this.collide(p, this)) {
+            // 子弹消失
+            this.life = 0
+            p.life += 30
+            log('p.life', p.life)
+        }
+    }
+
+    // moveDown() {
+    //     this.y += this.speed
+    // }
+}
+
 class Bullet extends GuaImage {
     constructor(game) {
         super(game, 'bullet')
@@ -15,7 +71,7 @@ class Bullet extends GuaImage {
 
     setup() {
         this.speed = 3
-        this.life = 100
+        this.life = 10
     }
 
     update() {
@@ -27,22 +83,6 @@ class Bullet extends GuaImage {
 
     debuger() {
         this.speed = config.bullet_speed
-    }
-
-    aInb(x, x1, x2) {
-        return x >= x1 && x <= x2
-    }
-
-    collide(o, ball) {
-        var a = o
-        var b = ball
-        var aInb = this.aInb
-        if(aInb(a.x, b.x, b.x + b.w) || aInb(b.x, a.x, a.x + a.w)) {
-            if(aInb(a.y, b.y, b.y + b.h) || aInb(b.y, a.y, a.y + a.h)) {
-                return true
-            }
-        }
-        return false
     }
 
     blast() {
@@ -61,13 +101,19 @@ class Bullet extends GuaImage {
     }
 
 }
+
 class Player extends GuaImage {
     constructor(game) {
         super(game, 'player')
+        this.game = game
         this.setup()
     }
 
     setup() {
+        this.x = 100
+        this.y = 400
+        this.w = 100
+        this.h = 100
         this.speed = 10
         this.cooldown = 0
         this.life = 100
@@ -84,19 +130,37 @@ class Player extends GuaImage {
     }
 
     moveLeft() {
-        this.x -= this.speed
+        if(this.x < 0) {
+          this.x = 0
+        }else {
+          this.x -= this.speed
+        }
     }
 
     moveRight() {
-        this.x += this.speed
+        var w = this.game.canvas.clientWidth - this.game.scene.player.w
+        if(this.x > w) {
+          this.x = w
+        }else {
+          this.x += this.speed
+        }
     }
 
     moveUp() {
-        this.y -= this.speed
+        if(this.y < 0) {
+          this.y = 0
+        }else {
+          this.y -= this.speed
+        }
     }
 
     moveDown() {
-        this.y += this.speed
+        var w = this.game.canvas.clientHeight + this.game.scene.player.h
+        if(this.y  > w) {
+          this.y = w
+        }else {
+          this.y += this.speed
+        }
     }
 
     fire() {
@@ -149,16 +213,20 @@ class EnemyBullet extends GuaImage {
     }
 
     blast() {
+        var s = this.scene
         var p = this.scene.player
         if(this.life > 0 && p.life > 0 &&  this.collide(p, this)) {
             // 子弹消失
             this.life = 0
-            p.life--
+            p.life -= 10
+            // 更新生命值显示
+            s.lifeCondition.text = `生命值: ${p.life}`
             this.scene.particleSystems = GuaParticleSystems.new(this.game, this.x, this.y)
             this.scene.addElement(this.scene.particleSystems)
         }
     }
 }
+
 class Enemy extends GuaImage {
     constructor(game, scene) {
         super(game, 'enemy')
@@ -173,19 +241,20 @@ class Enemy extends GuaImage {
         this.speed = randomBetween(2, 5)
         this.x = randomBetween(0, 350)
         this.y = -randomBetween(0, 200)
-        this.onFire()
+        // this.onFire()
     }
-    onFire() {
-            if(this.life > 0) {
-                this.fire()
-            }
-    }
+    // onFire() {
+    //         if(this.life > 0) {
+    //             this.fire()
+    //         }
+    // }
     update() {
-        if(this.cooldown > 0) {
-            this.cooldown--
-        }
-        this.fire()
-        this.y += this.speed
+          if(this.cooldown > 0) {
+              this.cooldown--
+          }
+          this.blast()
+          this.fire()
+          this.y += this.speed
         if(this.y > 600) {
             this.setup()
             this.scene.enemies.push(this)
@@ -208,6 +277,20 @@ class Enemy extends GuaImage {
         }
     }
 
+    blast() {
+        var s = this.scene
+        var p = this.scene.player
+        if(this.life > 0 && p.life > 0 &&  this.collide(p, this)) {
+            // 子弹消失
+            this.life = 0
+            p.life = 0
+            // 更新生命值显示
+            s.lifeCondition.text = `生命值: ${p.life}`
+            this.scene.particleSystems = GuaParticleSystems.new(this.game, this.x, this.y)
+            this.scene.addElement(this.scene.particleSystems)
+        }
+    }
+
     // moveDown() {
     //     this.y += this.speed
     // }
@@ -222,13 +305,10 @@ class Scene extends GuaScene {
 
     setup() {
         var game = this.game
-        this.numberOfEnemies = 5
+        this.numberOfEnemies = randomBetween(0, 10)
+        this.numberOfLoves = randomBetween(0, 2)
         this.bg = GuaImage.new(game, 'sky')
         this.player = Player.new(game)
-        this.player.x = 100
-        this.player.y = 400
-        this.player.w = 100
-        this.player.h = 100
 
         this.addElement(this.bg)
         this.addElement(this.player)
@@ -237,8 +317,22 @@ class Scene extends GuaScene {
         // this.elements.push(this.player)
 
         this.addEnemies()
-    }
+        // 增加生命值显示
+        this.lifeCondition = GuaLabel.new(game,  `生命值: ${this.player.life}`)
+        this.addElement(this.lifeCondition)
 
+        this.addLove()
+    }
+    addLove() {
+        var es = []
+        for(var i = 0; i < this.numberOfLoves; i++) {
+            var e = Love.new(this.game, this)
+            e.w = 10
+            e.h = 10
+            es.push(e)
+            this.addElement(e)
+        }
+    }
     addEnemies() {
         var es = []
         for(var i = 0; i < this.numberOfEnemies; i++) {
