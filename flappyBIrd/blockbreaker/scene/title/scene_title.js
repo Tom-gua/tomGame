@@ -5,7 +5,7 @@ class Pipes {
         this.pipeSpace = 100
         this.管子横向间距 = 200
         this.pipeIntialX = 400
-        this.columsOfpipe = 4
+        this.columsOfpipe = 3
         for (var i = 0; i < this.columsOfpipe; i++) {
             var p1 = GuaImage.new(game, 'tube2')
             p1.flipY = true
@@ -26,7 +26,6 @@ class Pipes {
     }
     resetPipesPosition(p1, p2) {
         p1.y = randomBetween(-280, 10)
-        log(p1.y)
         p2.y = p1.y + p1.h + this.pipeSpace
     }
     update() {
@@ -37,9 +36,11 @@ class Pipes {
             p1.x -= 1
             p2.x -= 1
             if(p1.x < -50) {
+                log('触发1', this.管子横向间距)
                 p1.x += this.管子横向间距 * this.columsOfpipe
             }
             if(p2.x < -50) {
+                log('触发2', this.管子横向间距)
                 p2.x += this.管子横向间距 * this.columsOfpipe
                 this.resetPipesPosition(p1, p2)
             }
@@ -65,39 +66,26 @@ class Pipes {
     }
 }
 
-
-
-class SceneTitle extends GuaScene {
+class Grounds {
     constructor(game) {
-        super(game)
-        log(game)
-        // var label = GuaLabel.new(game, 'hello')
-        // this.addElement(label)
-        var f = Flappy.new(game)
-        this.f = f
-        var bg = GuaImage.new(game, 'bg')
-        bg.w = 600
-        bg.h = 350
-        this.addElement(bg)
-        // 加入水管
-        this.pipe = Pipes.new(game)
-        this.addElement(this.pipe)
+        this.game = game
+        this.setup()
+    }
+    setup() {
         this.grounds = []
+        this.skipCount = 5
         for (var i = 0; i < 2; i++) {
-            var ground = GuaImage.new(game, 'ground')
+            var ground = GuaImage.new(this.game, 'ground')
             ground.x = i * 310
             ground.y = 340
             this.ground = ground
-            this.addElement(ground)
             this.grounds.push(ground)
         }
-        this.skipCount = 5
-        this.addElement(f)
-
-        this.setupInputs()
+    }
+    static new(game) {
+        return new this(game)
     }
     update() {
-        super.update()
         this.skipCount--
         var offSet = 5
         if(this.skipCount == 0) {
@@ -109,6 +97,35 @@ class SceneTitle extends GuaScene {
             g.x -= offSet
         }
     }
+    draw(){
+        for(var g of this.grounds) {
+            this.game.drawImage(g)
+        }
+    }
+}
+
+class SceneTitle extends GuaScene {
+    constructor(game) {
+        super(game)
+        var f = Flappy.new(game)
+        this.f = f
+        var bg = GuaImage.new(game, 'bg')
+        bg.w = 600
+        bg.h = 350
+        this.addElement(bg)
+        // 加入水管
+        this.pipe = Pipes.new(game)
+        this.addElement(this.pipe)
+        // 添加地面
+        this.ground = Grounds.new(game)
+        this.addElement(this.ground)
+        this.addElement(f)
+
+        this.setupInputs()
+    }
+    // update() {
+    //     super.update()
+    // }
     // draw() {
     //     // draw labels
     //     this.game.context.fillText('按 k 开始游戏', 100, 190)
@@ -117,7 +134,6 @@ class SceneTitle extends GuaScene {
         var self = this
         self.game.registerAction('a', function(keyStatus) {
             self.f.move(-2, keyStatus)
-
         })
         self.game.registerAction('d', function(keyStatus) {
             self.f.move(2, keyStatus)

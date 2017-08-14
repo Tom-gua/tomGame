@@ -31,7 +31,7 @@ class GuaScene {
         if(this.enableDebugMode) {
             for (var i = 0; i < this.elements.length; i++) {
               var e = this.elements[i]
-              e.debuger && this.enableDebugMode && e.debuger()
+              e.debuger && e.debuger()
             }
         }
       for (var i = 0; i < this.elements.length; i++) {

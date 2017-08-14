@@ -13,7 +13,7 @@ class GuaImage {
         this.flipY = false
     }
     static new(game, name) {
-        var i = new this(game, name)
+       var i = new this(game, name)
         return i
     }
     aInb(x, x1, x2) {
