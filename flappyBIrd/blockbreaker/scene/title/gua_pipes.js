@@ -39,11 +39,9 @@ class Pipes {
             p1.x -= 1
             p2.x -= 1
             if(p1.x < -50) {
-                log('触发1', this.管子横向间距)
                 p1.x += this.管子横向间距 * this.columsOfpipe
             }
             if(p2.x < -50) {
-                log('触发2', this.管子横向间距)
                 p2.x += this.管子横向间距 * this.columsOfpipe
                 this.resetPipesPosition(p1, p2)
             }
