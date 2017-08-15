@@ -8,13 +8,15 @@ class Pipes {
         this.pipeSpace = 100
         this.管子横向间距 = 200
         this.pipeIntialX = 400
-        this.columsOfpipe = 3
-        for (var i = 0; i < this.columsOfpipe; i++) {
+        this.columsOfpipe = 7
+        for (var i = 1; i < this.columsOfpipe; i++) {
             var p1 = GuaImage.new(game, 'tube2')
+            p1.h = 100
             p1.flipY = true
             p1.x = this.pipeIntialX + i * this.管子横向间距
             var p2 = GuaImage.new(game, 'tube2')
             p2.x = p1.x
+            p2.h = 100
             this.resetPipesPosition(p1, p2)
             this.pipes.push(p1)
             this.pipes.push(p2)
@@ -26,9 +28,12 @@ class Pipes {
     debuger() {
         this.管子横向间距 = config.管子横向间距.value
         this.pipeSpace = config.pipeSpace.value
+        for (var p of this.pipes) {
+            p.h = config.pipeh.value
+        }
     }
     resetPipesPosition(p1, p2) {
-        p1.y = randomBetween(-280, 10)
+        p1.y = randomBetween(-60, 10)
         p2.y = p1.y + p1.h + this.pipeSpace
     }
     update() {
@@ -38,11 +43,11 @@ class Pipes {
             var p2 = pipes[i+1]
             p1.x -= 1
             p2.x -= 1
-            if(p1.x < -50) {
-                p1.x += this.管子横向间距 * this.columsOfpipe
+            if(p1.x < -60) {
+                p1.x += this.管子横向间距 * this.columsOfpipe / 2
             }
-            if(p2.x < -50) {
-                p2.x += this.管子横向间距 * this.columsOfpipe
+            if(p2.x < -60) {
+                p2.x += this.管子横向间距 * this.columsOfpipe / 2
                 this.resetPipesPosition(p1, p2)
             }
         }

@@ -15,26 +15,30 @@ class SceneTitle extends GuaScene {
         this.ground = Grounds.new(game)
         this.addElement(this.ground)
         this.addElement(f)
+        this.beginGame = true
+        this.setup()
+        // 添加开始按钮
+        this.start = StartButton.new(game, 'start')
+        this.addElement(this.start)
 
-        this.setupInputs()
+        // 添加结束按钮
+        this.pause = PauseButton.new(game, 'pause')
+        this.addElement(this.pause)
     }
-    // update() {
-    //     super.update()
-    // }
-    // draw() {
-    //     // draw labels
-    //     this.game.context.fillText('按 k 开始游戏', 100, 190)
-    // }
-    setupInputs() {
+    setup() {
         var self = this
-        self.game.registerAction('a', function(keyStatus) {
-            self.f.move(-2, keyStatus)
+        self.game.registerAction('p', function(keyStatus) {
+            if(keyStatus === 'up') {
+                self.beginGame = !self.beginGame
+            }
         })
-        self.game.registerAction('d', function(keyStatus) {
-            self.f.move(2, keyStatus)
-        })
-        self.game.registerAction('j', function(keyStatus) {
-            self.f.jump()
-        })
+    }
+    update() {
+        this.start.update()
+        this.pause.update()
+        if(this.beginGame) {
+            return
+        }
+        super.update()
     }
 }

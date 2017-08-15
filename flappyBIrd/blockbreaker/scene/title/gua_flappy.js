@@ -8,7 +8,10 @@ class Flappy extends GuaAnimation {
         this.y = 100
         this.x = 120
         this.rotation = 0
+        this.flippySpeed = 2
+
         this.setup()
+        this.setupInputs()
     }
     setup() {
         this.addAnimationType('bird')
@@ -36,6 +39,23 @@ class Flappy extends GuaAnimation {
         if(this.rotation < 45) {
             this.rotation += 5
         }
+    }
+    debuger() {
+        this.flippySpeed = config.flippySpeed.value
+        // this.flippyX = config.flippyX.value
+        // this.flippyY = config.flippyY.value
+    }
+    setupInputs() {
+        var self = this
+        self.game.registerAction('a', function(keyStatus) {
+            self.move(-self.flippySpeed, keyStatus)
+        })
+        self.game.registerAction('d', function(keyStatus) {
+            self.move(self.flippySpeed, keyStatus)
+        })
+        self.game.registerAction('j', function(keyStatus) {
+            self.jump()
+        })
     }
     jump() {
         this.vy = -10 * 0.5

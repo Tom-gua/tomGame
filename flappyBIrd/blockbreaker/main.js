@@ -80,7 +80,8 @@ var  __main = function() {
         ground:'img/flappy/ground.png',
         tube1:'img/flappy/tube1.png',
         tube2:'img/flappy/tube2.png',
-        
+        start:'img/flappy/start.png',
+        pause:'img/flappy/pause.png',
     }
     var game = Game.instance(60, images, function(g) {
         var s = SceneTitle.new(g)
