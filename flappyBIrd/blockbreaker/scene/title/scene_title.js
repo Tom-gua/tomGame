@@ -4,16 +4,17 @@ class SceneTitle extends GuaScene {
         super(game)
         var f = Flappy.new(game)
         this.f = f
-        var bg = GuaImage.new(game, 'bg')
-        bg.w = 600
-        bg.h = 350
-        this.addElement(bg)
+        // 由于不同的场景都有同样的背景， 因此抽取到scene中
+        // var bg = GuaImage.new(game, 'bg')
+        // bg.w = 600
+        // bg.h = 350
+        // this.addElement(bg)
         // 加入水管
         this.pipe = Pipes.new(game)
         this.addElement(this.pipe)
         // 添加地面
-        this.ground = Grounds.new(game)
-        this.addElement(this.ground)
+        // this.ground = Grounds.new(game)
+        // this.addElement(this.ground)
         this.addElement(f)
         this.beginGame = false
         this.setup()
@@ -39,6 +40,7 @@ class SceneTitle extends GuaScene {
     draw() {
         super.draw()
         this.drawText("20px Arial", "black",`总得分: ${this.f.score}`, 500, 30)
+
     }
     setup() {
         var self = this

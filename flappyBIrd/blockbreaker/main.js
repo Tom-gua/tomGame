@@ -83,6 +83,7 @@ var  __main = function() {
         start:'img/flappy/start.png',
         pause:'img/flappy/pause.png',
         modalbg: 'img/flappy/modalbg.png',
+        title:'img/flappy/title.png',
     }
     var game = Game.instance(60, images, function(g) {
         // var s = SceneTitle.new(g)
