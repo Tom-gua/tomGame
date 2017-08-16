@@ -99,6 +99,10 @@ class SceneStart extends GuaScene {
         this.title.x = x
         this.title.y = y
         this.addElement(this.title)
+        // 添加地面
+        this.ground = Grounds.new(this.game)
+        this.addElement(this.ground)
+
         this.bird = StartFlappy.new(this.game)
         this.bird.x = this.game.context.canvas.clientWidth / 2 - 20
         this.bird.y = this.game.context.canvas.clientHeight / 2 - 20

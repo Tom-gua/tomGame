@@ -14,9 +14,6 @@ class GuaScene {
         this.bg.w = 600
         this.bg.h = 350
         this.addElement(this.bg)
-        // 添加地面
-        this.ground = Grounds.new(this.game)
-        this.addElement(this.ground)
     }
     static new(game) {
         var i = new this(game)

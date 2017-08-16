@@ -13,8 +13,8 @@ class SceneTitle extends GuaScene {
         this.pipe = Pipes.new(game)
         this.addElement(this.pipe)
         // 添加地面
-        // this.ground = Grounds.new(game)
-        // this.addElement(this.ground)
+        this.ground = Grounds.new(game)
+        this.addElement(this.ground)
         this.addElement(f)
         this.beginGame = false
         this.setup()
