@@ -28,6 +28,17 @@ class SceneTitle extends GuaScene {
         // 添加结束游戏的 modal
         this.modal = Modal.new(game)
         this.addElement(this.modal)
+        this.closeModal = false
+    }
+    drawText(font, style, text, x, y) {
+        var context = this.game.context
+        context.font=font;
+        context.fillStyle = style;
+        context.fillText(text, x, y)
+    }
+    draw() {
+        super.draw()
+        this.drawText("20px Arial", "black",`总得分: ${this.f.score}`, 500, 30)
     }
     setup() {
         var self = this
@@ -36,10 +47,27 @@ class SceneTitle extends GuaScene {
                 self.beginGame = !self.beginGame
             }
         })
+        self.game.registerAction('r', function(keyStatus) {
+            if(keyStatus === 'up') {
+                //todo 重新开始，切换场景
+                log(self.game)
+                var s = SceneStart.new(self.game)
+                self.game.replaceScene(s)
+            }
+        })
+
+        self.game.canvas.addEventListener('click', (e) => {
+            if(e.offsetX > 438 && e.offsetX < 470) {
+                if(e.offsetY > 80 && e.offsetY < 110){
+                    this.closeModal = true
+                }
+            }
+        })
     }
     update() {
         this.start.update()
         this.pause.update()
+        this.modal.update()
         if(this.beginGame) {
             return
         }

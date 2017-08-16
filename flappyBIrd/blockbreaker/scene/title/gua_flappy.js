@@ -7,6 +7,7 @@ class Flappy extends GuaAnimation {
         this.vy = 0
         this.y = 100
         this.x = 120
+        this.score = 0
         this.rotation = 0
         this.flippySpeed = 2
         this.life = 100
@@ -66,6 +67,15 @@ class Flappy extends GuaAnimation {
             }
         })
     }
+    addScore() {
+        var pipes = this.game.scene.pipe.pipes
+        var head = this.x + this.w
+        for (var p of pipes) {
+            if(p.x < head && p.x + 1 > head) {
+                this.score += 1
+            }
+        }
+    }
     update() {
         this.checkCollide()
         super.update()
@@ -80,6 +90,8 @@ class Flappy extends GuaAnimation {
         if(this.rotation < 45) {
             this.rotation += 5
         }
+        this.addScore()
+        
     }
 
     debuger() {
@@ -100,11 +112,16 @@ class Flappy extends GuaAnimation {
         })
     }
     jump() {
-        this.vy = -10 * 0.5
-        this.rotation = -45
+        if(this.life > 0) {
+            this.vy = -10 * 0.5
+            this.rotation = -45
+
+        }
     }
     move(x, keyStatus) {
-        this.flipX = x < 0
-        this.x += x
+        if(this.life > 0) {
+            this.flipX = x < 0
+            this.x += x
+        }
     }
 }

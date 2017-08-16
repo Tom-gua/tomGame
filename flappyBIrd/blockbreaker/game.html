@@ -30,6 +30,7 @@
         <!-- 结束和标题场景 -->
         <script src="scene/end/scene_end.js"></script>
         <script src='scene/title/scene_title.js'></script>
+        <script src="scene/title/scene_start.js"></script>
         <!-- 关卡数据 -->
         <script src="config.js"></script>
     </head>
@@ -60,7 +61,7 @@
                 var t = `
                 <div class="">
                   <label>
-                    <input class="gua-auto-slider" type="range" max="300" value="${item.value}" data-value="config.${key}"/>
+                    <input class="gua-auto-slider" type="range" max="1000" value="${item.value}" data-value="config.${key}"/>
                     ${item._comment}: <span class="gua-label"></span>
                   </label>
                 </div>
