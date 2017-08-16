@@ -84,6 +84,17 @@ var  __main = function() {
         pause:'img/flappy/pause.png',
         modalbg: 'img/flappy/modalbg.png',
         title:'img/flappy/title.png',
+        // 0-9
+        start0:'img/flappy/number0.png',
+        start1:'img/flappy/number1.png',
+        start2:'img/flappy/number2.png',
+        start3:'img/flappy/number3.png',
+        start4:'img/flappy/number4.png',
+        start5:'img/flappy/number5.png',
+        start6:'img/flappy/number6.png',
+        start7:'img/flappy/number7.png',
+        start8:'img/flappy/number8.png',
+        start9:'img/flappy/number9.png',
     }
     var game = Game.instance(60, images, function(g) {
         // var s = SceneTitle.new(g)

@@ -51,8 +51,6 @@ class SceneTitle extends GuaScene {
         })
         self.game.registerAction('r', function(keyStatus) {
             if(keyStatus === 'up') {
-                //todo 重新开始，切换场景
-                log(self.game)
                 var s = SceneStart.new(self.game)
                 self.game.replaceScene(s)
             }

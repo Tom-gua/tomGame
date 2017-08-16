@@ -5,8 +5,8 @@ class Flappy extends GuaAnimation {
         // 重力和加速度
         this.gy = 10
         this.vy = 0
-        this.y = 100
-        this.x = 120
+        this.x = this.game.context.canvas.clientWidth / 2
+        this.y = this.game.context.canvas.clientHeight / 2 - 80
         this.score = 0
         this.rotation = 0
         this.flippySpeed = 2

@@ -24,6 +24,68 @@ class StartFlappy extends GuaAnimation{
     }
 }
 
+class Number {
+    constructor(game){
+        this.game = game
+        this.array = []
+        this.animations = {
+            run: [],
+        }
+        this.x = this.game.context.canvas.clientWidth / 2
+        this.y = this.game.context.canvas.clientHeight / 2
+        this.numbers = 1
+        this.changeTexture = this.changeTexture.bind(this)
+        // this.setup()
+    }
+    generateNumber(len) {
+        for(var i = 0; i < len; i++) {
+            var name = `start${i}`
+            var t = this.game.textureByName(name)
+            this.animations[`run`].push(t)
+        }
+        this.frameIndex = 0
+        this.frameCount = len * 60
+    }
+    static new(game){
+        return new this(game)
+    }
+    changeNumberLifeByTime() {
+        this.changeNumber = true
+    }
+    frames() {
+        return this.animations['run']
+    }
+    changeTexture(n) {
+        this.texture = this.frames()[n]
+        if(n == 0) {
+            var s = SceneTitle.new(this.game)
+            this.game.replaceScene(s)
+        }
+    }
+    update(){
+        if(this.changeNumber &&　this.frameCount >  -1)　{
+            var a = this.changeTexture
+            var s = {
+                240: a,
+                180: a,
+                120: a,
+                60: a,
+            }
+            var f = this.frameCount
+            if(typeof ( s[f] ) == 'function') {
+                s[f]((f / 60 ) - 1)
+            }
+            this.frameCount--
+        }
+    }
+    draw() {
+        if(this.changeNumber) {
+            var context = this.game.context
+            context.drawImage(this.texture, this.x, this.y - 80)
+        }
+    }
+}
+
 class SceneStart extends GuaScene {
     constructor(game) {
         super(game)
@@ -41,10 +103,15 @@ class SceneStart extends GuaScene {
         this.bird.x = this.game.context.canvas.clientWidth / 2 - 20
         this.bird.y = this.game.context.canvas.clientHeight / 2 - 20
         this.addElement(this.bird)
+        // 增加数字
+        this.number = Number.new(game)
+        this.number.generateNumber(4)
+        this.addElement(this.number)
+        var self = this
         game.registerAction('k', function(){
             // 按下了按钮之后显示倒计时之后切换场景
-            var s = SceneTitle.new(game)
-            game.replaceScene(s)
+            self.number.changeNumberLifeByTime()
+
         })
     }
     drawText(font, style, text, x, y) {
