@@ -38,6 +38,7 @@ class Number {
         // this.setup()
     }
     generateNumber(len) {
+        this.numbers = len
         for(var i = 0; i < len; i++) {
             var name = `start${i}`
             var t = this.game.textureByName(name)
@@ -65,11 +66,10 @@ class Number {
     update(){
         if(this.changeNumber &&　this.frameCount >  -1)　{
             var a = this.changeTexture
-            var s = {
-                240: a,
-                180: a,
-                120: a,
-                60: a,
+            var s = {}
+            for(var i = 0; i < this.numbers; i++) {
+                var n = (i + 1) * 60
+                s[n] = a
             }
             var f = this.frameCount
             if(typeof ( s[f] ) == 'function') {
