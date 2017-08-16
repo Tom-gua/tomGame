@@ -69,19 +69,19 @@ class Flappy extends GuaAnimation {
     }
     addScore() {
         var pipes = this.game.scene.pipe.pipes
-        var head = this.x + this.w
         for (var p of pipes) {
-            if(p.x < head && p.x + 1 > head) {
+            if(p.x + p.w == this.x){
                 this.score += 1
             }
         }
     }
     update() {
         this.checkCollide()
+        this.addScore()
         super.update()
         // 更新受力
         this.y += this.vy
-        this.vy += this.gy * 0.05
+        this.vy += this.gy * 0.07
         var h = 312
         if(this.y > h) {
             this.y = h
@@ -90,8 +90,7 @@ class Flappy extends GuaAnimation {
         if(this.rotation < 45) {
             this.rotation += 5
         }
-        this.addScore()
-        
+
     }
 
     debuger() {
@@ -115,7 +114,6 @@ class Flappy extends GuaAnimation {
         if(this.life > 0) {
             this.vy = -10 * 0.5
             this.rotation = -45
-
         }
     }
     move(x, keyStatus) {

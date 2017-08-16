@@ -85,8 +85,8 @@ var  __main = function() {
         modalbg: 'img/flappy/modalbg.png',
     }
     var game = Game.instance(60, images, function(g) {
+        // var s = SceneTitle.new(g)
         var s = SceneStart.new(g)
-        // var s = Scene.new(g)
         g.runWithScene(s)
         // var ball = Ball(game)
         // var paddle = Paddle(game)

@@ -15,7 +15,7 @@ class SceneTitle extends GuaScene {
         this.ground = Grounds.new(game)
         this.addElement(this.ground)
         this.addElement(f)
-        this.beginGame = true
+        this.beginGame = false
         this.setup()
         // 添加开始按钮
         this.start = StartButton.new(game, 'start')

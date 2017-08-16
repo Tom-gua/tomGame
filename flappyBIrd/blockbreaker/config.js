@@ -5,11 +5,11 @@ const config = {
     },
     'pipeSpace': {
         _comment: '上下两根管子管口间距',
-        value: 700,
+        value: 150,
     },
     'pipeh': {
         _comment: '上下管子自身的高度',
-        value: 10,
+        value: 60,
     },
     'flippySpeed': {
         _comment: '小鸟的速度',
