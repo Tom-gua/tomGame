@@ -30,6 +30,11 @@ class SceneTitle extends GuaScene {
         this.modal = Modal.new(game)
         this.addElement(this.modal)
         this.closeModal = false
+
+        // 增加数字
+        this.number = Numbers.new(game)
+        this.number.generateNumber(10)
+        this.addElement(this.number)
     }
     drawText(font, style, text, x, y) {
         var context = this.game.context
@@ -40,7 +45,6 @@ class SceneTitle extends GuaScene {
     draw() {
         super.draw()
         this.drawText("20px Arial", "black",`总得分: ${this.f.score}`, 500, 30)
-
     }
     setup() {
         var self = this

@@ -24,7 +24,7 @@ class StartFlappy extends GuaAnimation{
     }
 }
 
-class Number {
+class Numbers {
     constructor(game){
         this.game = game
         this.array = []
@@ -108,7 +108,7 @@ class SceneStart extends GuaScene {
         this.bird.y = this.game.context.canvas.clientHeight / 2 - 20
         this.addElement(this.bird)
         // 增加数字
-        this.number = Number.new(game)
+        this.number = Numbers.new(game)
         this.number.generateNumber(4)
         this.addElement(this.number)
         var self = this
