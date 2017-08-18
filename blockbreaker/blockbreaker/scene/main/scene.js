@@ -116,6 +116,7 @@ class Player extends GuaImage {
         this.speed = 10
         this.cooldown = 0
         this.life = 100
+        this.fireBullets = []
     }
 
     update() {
@@ -171,6 +172,7 @@ class Player extends GuaImage {
             b.x = x
             b.y = y - 5
             this.scene.addElement(b)
+            this.fireBullets.push(b)
         }
     }
 }
@@ -225,6 +227,14 @@ class EnemyBullet extends GuaImage {
             this.scene.particleSystems = GuaParticleSystems.new(this.game, this.x, this.y, this.fireImage)
             this.scene.addElement(this.scene.particleSystems)
         }
+        p.fireBullets && p.fireBullets.forEach((item) => {
+            if(this.life > 0 && item.life > 0 && this.collide(item, this)) {
+                this.life = 0
+                item.life = 0
+                this.scene.particleSystems = GuaParticleSystems.new(this.game, this.x, this.y, 'fire')
+                this.scene.addElement(this.scene.particleSystems)
+            }
+        })
     }
 }
 
