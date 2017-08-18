@@ -13,7 +13,10 @@ var Block = function(game, position) {
         }
     }
     o.collide = function(ball) {
-      return o.alive && ( rectIntersects(o, ball) || rectIntersects(ball, o) )
+        return o.alive && ( rectIntersects(o, ball) || rectIntersects(ball, o) )
+    }
+    o.generateBlock = function() {
+
     }
     return o
 }
