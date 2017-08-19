@@ -319,10 +319,16 @@ class Scene extends GuaScene {
         var game = this.game
         this.numberOfEnemies = randomBetween(0, 15)
         this.numberOfLoves = randomBetween(0, 2)
-        this.bg = GuaImage.new(game, 'sky')
+        this.bgs = []
+        for (var i = 0; i < 2; i++) {
+            var b = GuaImage.new(game, 'sky')
+            b.y = -i * 600
+            this.addElement(b)
+            this.bgs.push(b)
+        }
+
         this.player = Player.new(game)
 
-        this.addElement(this.bg)
         this.addElement(this.player)
         // this.elements = []
         // this.elements.push(this.bg)
@@ -385,6 +391,16 @@ class Scene extends GuaScene {
 
     update() {
         this.removeEnemies()
+        var offset = 1
+        var bgs = this.bgs
+        for (var i = 0; i < bgs.length; i++) {
+            var a = bgs[i]
+            if(a.y === 600){
+                a.y = -600
+            }else {
+                a.y += offset
+            }
+        }
         super.update()
     }
 }
