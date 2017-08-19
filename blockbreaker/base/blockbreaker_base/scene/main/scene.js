@@ -29,6 +29,7 @@ var Scene = function(game) {
         game.drawImage(ball)
         for(var i = 0; i < blocks.length; i++){
             var block = blocks[i]
+            log(block)
             if(block.alive) {
                 game.drawImage(block)
             }

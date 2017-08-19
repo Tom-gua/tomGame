@@ -15,12 +15,13 @@ class SceneTitle extends GuaScene {
             var s = SceneEdit.new(game)
             game.replaceScene(s)
         })
+
     }
 
     draw() {
         // draw labels
-        this.game.context.fillText('按 k 开始游戏', 100, 190)
-        this.game.context.fillText('按 e 开始编辑', 200, 300)
+        this.game.context.fillText('按 k 开始游戏', 100, 150)
+        this.game.context.fillText('按 e 开始编辑', 100, 200)
     }
 }
 
@@ -42,7 +43,9 @@ class SceneEdit extends GuaScene {
         this.indexCondition = -1
         this.editIndex = 0
         this.edit = true
+        this.isPoint = false
         this.position = []
+        this.add = false
         this.currenBlocks = []
         this.bg = Bg(this.game)
         this.balls = []
@@ -75,34 +78,48 @@ class SceneEdit extends GuaScene {
                         self.editIndex = index
                         self.edit = false
                         self.indexCondition = 2
+                        var s = localStorage.leve ? JSON.parse(localStorage.leve) : []
+                        var arr = s[index] || []
+                        arr.forEach((item) => {
+                            var block = Block(this.game, item)
+                            block.w = 20
+                            block.h = 20
+                            this.currenBlocks.push(block)
+                        })
                     }
                 })
             } else {
-                // 开始在界面中编辑
-                this.p = [x, y]
-                this.position.push(this.p)
-                // 根据点击的 x, y 生成对应的砖块，并存储到本地中
-                // 点击的点在不在判断现有的砖块里， 如果在就拖动更新位置。否则就加一个和 node 中的 model 很类似
-                var isPoint = false
-                if(this.currenBlocks.length == 0) {
-                    var b = Block(this.game, x, y)
-                    this.currenBlocks.push(b)
-                }else {
-                    this.currenBlocks.forEach((block) => {
-                        if(block && block.hasPoint(x, y, block)) {
-                            // 可以拖动,修改坐标
-                            isPoint = true
-                        }
-                    })
-                    if(!isPoint) {
-                        var b = Block(this.game, x, y)
-                        this.currenBlocks.push(b)
+                this.p = [x - 20, y - 20]
+                this.currenBlocks.forEach((block, index) => {
+                    if(block && block.hasPoint(x, y, block)) {
+                        // 删除掉这个block
+                        this.currenBlocks.splice(index, 1)
+                        this.add = true
                     }else {
-                        // 拖动物体
-                        log('移动 blocks')
+                        this.add = false
                     }
+                })
+                // 根据 block 的 edit 来查找
+                if(!this.add) {
+                    // 生成一个block
+                    var block = Block(this.game, this.p)
+                    block.w = 20
+                    block.h = 20
+                    this.currenBlocks.push(block)
                 }
             }
+        })
+
+        this.game.registerAction('s', function() {
+            // 需要存储数据到localStorage中
+            var a  = []
+            self.currenBlocks.forEach((item) => {
+                a.push([item.x, item.y])
+            })
+            var l = self.editIndex
+            window.leve = localStorage.leve ? JSON.parse(localStorage.leve) : []
+            window.leve[l] = a
+            localStorage.leve = JSON.stringify(window.leve)
         })
     }
 
@@ -120,7 +137,6 @@ class SceneEdit extends GuaScene {
             this.balls[this.editIndex].x = 460
             this.balls[this.editIndex].y = 10
             this.game.drawImage(this.balls[this.editIndex])
-            log(this.currenBlocks)
             this.currenBlocks.forEach((item) => {
                 this.game.drawImage(item)
             })

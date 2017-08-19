@@ -1,9 +1,11 @@
-var loadLevel = function(game) {
+var loadLevel = function(game, n) {
     var level = levels[0]
     // 现在循环加入三个砖块
     var blocks = []
-    for(var i = 0; i < level.length; i++){
-        var p = level[i]
+    var leves = JSON.parse(localStorage.leve)
+    var m = leves[n - 1] || []
+    for(var i = 0; i < m.length; i++){
+        var p = m[i]
         var block = Block(game, p)
         blocks.push(block)
     }
@@ -22,17 +24,16 @@ var enableDebugMode = function(game, enable) {
         paused = !paused
     }else if ('123456789'.includes(k)) {
       // 暂时为了 debug 临时加入关卡功能
-        log('k',k)
-        levels = []
-        length = k * 2
-        window.fps = length * 3
-        var m = []
-        for(var i = 1; i <= length; i ++){
-            var mathX = Math.random(0, i) * 150
-            var mathY = Math.random(0, i) * 200
-            m.push([mathX, mathY, 1])
-        }
-        levels.push(m)
+        // levels = []
+        // length = k * 2
+        // window.fps = length * 3
+        // var m = []
+        // for(var i = 1; i <= length; i ++){
+        //     var mathX = Math.random(0, i) * 150
+        //     var mathY = Math.random(0, i) * 200
+        //     m.push([mathX, mathY, 1])
+        // }
+        // levels.push(m)
       blocks = loadLevel(game, Number(k))
     }
   })
