@@ -40,9 +40,14 @@ var  __main = function() {
         ball: 'img/ball.png',
         sky: 'img/sky.png',
         player: 'img/player.png',
-        enemy: 'img/boss.png',
-        fire: 'img/ball.png',
-        love:'img/block.png',
+        enemy1: 'img/enemy1.png',
+        enemy2: 'img/enemy2.png',
+        enemy3: 'img/enemy3.png',
+        enemy4: 'img/enemy4.png',
+        fire: 'img/fire1.png',
+        enemyFire: 'img/6.png',
+        love:'img/love.png',
+        enemyParticle:'img/enemyParticle.png',
     }
     var game = Game.instance(60, images, function(g) {
         // var s = SceneTitle.new(g)

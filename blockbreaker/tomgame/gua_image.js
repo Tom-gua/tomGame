@@ -30,7 +30,7 @@ class GuaImage {
         return false
     }
     draw(){
-        if(this.life && this.life === 0) {
+        if(this.life === 0) {
             return
         }
         this.game.drawImage(this)

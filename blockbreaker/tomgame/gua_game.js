@@ -72,9 +72,9 @@ class Game {
         // log('image by name', g.images)
         var img = g.images[name]
         // var image = {
-        // w: img.width,
-        // h: img.height,
-        // image: img,
+            // w: img.width,
+            // h: img.height,
+            // image: img,
         // }
         return img
     }

@@ -22,8 +22,8 @@ class GuaLabel {
 
 
 class GuaParticle extends GuaImage{
-  constructor(game) {
-    super(game, 'fire')
+  constructor(game, name) {
+    super(game, name)
     this.game = game
     this.setup()
   }
@@ -35,6 +35,8 @@ class GuaParticle extends GuaImage{
     this.y = y
     this.vy = vy
     this.vx = vx
+    this.w = 60
+    this.h = 60
   }
   update() {
     this.life--
@@ -47,8 +49,10 @@ class GuaParticle extends GuaImage{
 }
 
 class GuaParticleSystems {
-  constructor(game, x, y) {
+  constructor(game, x, y, name) {
     this.game = game
+    this.names = name
+    log(game,x, y, name)
       this.x = x
       this.y = y
     this.setup()
@@ -59,8 +63,8 @@ class GuaParticleSystems {
     this.numberOfParticles = 20
     this.particles = []
   }
-  static new(game, x, y) {
-    return new this(game, x, y)
+  static new(game, x, y, name) {
+    return new this(game, x, y, name)
   }
   draw() {
       if(this.duration < 0){
@@ -75,7 +79,7 @@ class GuaParticleSystems {
     this.duration--
     // 添加小火花
     if(this.particles.length < this.numberOfParticles) {
-      var p = GuaParticle.new(this.game)
+      var p = GuaParticle.new(this.game, this.names)
       // 设置初始化坐标
       var s = 2
       var vx = randomBetween(-s, s)

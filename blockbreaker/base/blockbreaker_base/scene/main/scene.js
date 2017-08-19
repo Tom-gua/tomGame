@@ -29,7 +29,6 @@ var Scene = function(game) {
         game.drawImage(ball)
         for(var i = 0; i < blocks.length; i++){
             var block = blocks[i]
-            log(block)
             if(block.alive) {
                 game.drawImage(block)
             }
@@ -65,8 +64,7 @@ var Scene = function(game) {
         // 在点击的时候判断是不是点击到那个物体,即判断 x y 是不是在点击的矩形里面
         var x = event.offsetX
         var y = event.offsetY
-        // 点击的时候判断该位置存在不存在砖块
-
+        log(ball)
         if(ball.hasPoint(x, y)){
             // 点击的是我们的目标物体
             enableDrage = true

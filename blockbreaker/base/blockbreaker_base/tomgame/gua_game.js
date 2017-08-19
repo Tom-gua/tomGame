@@ -68,7 +68,6 @@ class Game {
     }
     imageByName(name) {
         var g = this
-        log(name)
         // log('image by name', g.images)
         var img = g.images[name]
         var image = {
